@@ -1,0 +1,33 @@
+---
+- hosts: rascls
+  gather_facts: yes
+  become: true
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: disable swap
+      shell: "{{ item }}"
+      with_items:
+        - "dphys-swapfile swapoff"
+        - "dphys-swapfile uninstall"
+        - "update-rc.d dphys-swapfile remove" 
+ 
+    - name: disable swap cont.
+      template: 
+        src: "templates/{{ item.template }}"
+        dest: "{{ item.dest }}"
+        mode: 0644
+      with_items:
+        - { template: cmdline.txt.j2, dest: /boot/cmdline.txt }
+        
+    - name: restart
+
+    - name: install and configure docker
+      shell: "curl -sSL get.docker.com | sh && usermod pi -aG docker && newgrp docker"             
+
+    - name: install and configure kubeadm
+
+    
+    
+
+
